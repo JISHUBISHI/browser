@@ -1,6 +1,8 @@
 import subprocess
 import sys
-from PyQt5.QtWidgets import QApplication, QMainWindow, QToolBar, QAction, QLineEdit, QVBoxLayout, QWidget, QTextEdit, QDialog, QPushButton, QLabel, QToolButton
+from PyQt5.QtWidgets import (QApplication, QMainWindow, QToolBar, QAction, 
+                             QLineEdit, QVBoxLayout, QWidget, QTextEdit, 
+                             QDialog, QPushButton, QLabel, QToolButton)
 from PyQt5.QtCore import QUrl, QSize, Qt
 from PyQt5.QtWebEngineWidgets import QWebEngineView
 from PyQt5.QtGui import QIcon, QFont, QPixmap
@@ -29,41 +31,43 @@ def generate_text_with_llama(prompt):
 class ChatDialog(QDialog):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("Network Buzz")
-        self.setGeometry(400, 300, 500, 400)
+        self.setWindowTitle("Network Buzz - Powered by Llama")
+        self.setGeometry(400, 300, 600, 500)
+        self.setStyleSheet("""
+            QDialog {
+                background-color: #f0f4ff;
+                border-radius: 15px;
+                padding: 20px;
+            }
+        """)
         
-        # Set up layout
         layout = QVBoxLayout()
         
-        # Label for user input
-        self.prompt_label = QLabel("Enter your prompt:")
-        self.prompt_label.setStyleSheet("font-size: 14px; font-weight: bold; color: #333;")
+        # Label for prompt
+        self.prompt_label = QLabel("💬 Ask Llama a question:")
+        self.prompt_label.setStyleSheet("font-size: 18px; font-weight: bold; color: #333;")
         layout.addWidget(self.prompt_label)
         
-        # Text input for prompt with enhanced styling
+        # Prompt input with enhanced style
         self.prompt_input = QLineEdit()
         self.prompt_input.setPlaceholderText("Type your question here...")
         self.prompt_input.setStyleSheet("""
             QLineEdit {
-                color: #333;
+                color: #444;
                 background-color: #ffffff;
-                border: 2px solid #cccccc;
-                border-radius: 10px;
-                padding: 8px;
-                font-size: 14px;
-                transition: border-color 0.3s ease, box-shadow 0.3s ease;
+                border: 2px solid #dcdcdc;
+                border-radius: 12px;
+                padding: 12px;
+                font-size: 16px;
             }
             QLineEdit:focus {
                 border-color: #6c63ff;
-                box-shadow: 0px 0px 10px rgba(108, 99, 255, 0.5);
-            }
-            QLineEdit:hover {
-                border-color: #888;
+                box-shadow: 0 0 10px rgba(108, 99, 255, 0.4);
             }
         """)
         layout.addWidget(self.prompt_input)
         
-        # Text area to display responses
+        # Response display area
         self.response_display = QTextEdit()
         self.response_display.setReadOnly(True)
         self.response_display.setStyleSheet("""
@@ -71,23 +75,25 @@ class ChatDialog(QDialog):
                 background-color: #f9f9f9;
                 color: #333;
                 border: 1px solid #ddd;
-                border-radius: 10px;
-                padding: 10px;
+                border-radius: 12px;
+                padding: 12px;
                 font-size: 14px;
+                margin-top: 10px;
             }
         """)
         layout.addWidget(self.response_display)
         
-        # Send button with custom styling
-        self.send_button = QPushButton("Send")
+        # "Send" button with gradient background
+        self.send_button = QPushButton("🚀 Send")
         self.send_button.setStyleSheet("""
             QPushButton {
                 background-color: #6c63ff;
+                background: qlineargradient(x1:0, y1:0, x2:1, y2:1, stop:0 #6c63ff, stop:1 #4b47b3);
                 color: #fff;
-                font-size: 14px;
-                padding: 8px 16px;
-                border-radius: 10px;
-                border: none;
+                font-size: 16px;
+                padding: 10px;
+                border-radius: 12px;
+                font-weight: bold;
             }
             QPushButton:hover {
                 background-color: #5a54d1;
@@ -100,31 +106,29 @@ class ChatDialog(QDialog):
         layout.addWidget(self.send_button)
         
         self.setLayout(layout)
-        
+    
     def handle_send(self):
         prompt = self.prompt_input.text()
         if prompt:
-            # User prompt displayed
+            # Display user input
             self.response_display.append(f"<b>User:</b> {prompt}\n")
             
-            # Model's response generation
+            # Get response from Llama model
             response = generate_text_with_llama(prompt)
             
-            # Display robot face with response
+            # Display response with robot icon
             self.add_robot_response(response)
             self.prompt_input.clear()
 
     def add_robot_response(self, response_text):
         """Display robot response with an icon."""
-        # Load robot icon
-        robot_icon = QPixmap("robot.png").scaled(30, 30, Qt.KeepAspectRatio, Qt.SmoothTransformation)
-        
-        # Format text with image
         response_html = f"""
-        <table>
+        <table style="width: 100%;">
             <tr>
-                <td><img src="robot.png" width="30" height="30"></td>
-                <td><b>Ollama:</b> {response_text}</td>
+                <td><img src="robot.png" width="35" height="35"></td>
+                <td style="padding-left: 10px; vertical-align: middle;">
+                    <b>Ollama:</b> {response_text}
+                </td>
             </tr>
         </table>
         """
@@ -134,49 +138,47 @@ class Browser(QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("My Web Browser")
-        self.setGeometry(300, 150, 900, 700)
+        self.setGeometry(300, 150, 1000, 800)
 
         # Set up toolbar
         navbar = QToolBar("Navigation")
-        navbar.setStyleSheet("background-color: #f0f0f0; padding: 3px;")
-        navbar.setIconSize(QSize(30, 30))
+        navbar.setIconSize(QSize(24, 24))
         self.addToolBar(navbar)
 
-        # Add buttons
+        # Back button
         back_btn = QAction(QIcon("back.png"), "Back", self)
         back_btn.triggered.connect(self.browser_back)
         navbar.addAction(back_btn)
 
+        # Forward button
         forward_btn = QAction(QIcon("forward.png"), "Forward", self)
         forward_btn.triggered.connect(self.browser_forward)
         navbar.addAction(forward_btn)
 
+        # Reload button
         reload_btn = QAction(QIcon("reload.png"), "Reload", self)
         reload_btn.triggered.connect(self.browser_reload)
         navbar.addAction(reload_btn)
 
+        # Home button
         home_btn = QAction(QIcon("home.png"), "Home", self)
         home_btn.triggered.connect(self.navigate_home)
         navbar.addAction(home_btn)
 
-        # "Network Buzz" button with custom styling
+        # Chat button
         chat_btn = QToolButton()
-        chat_btn.setText("Network Buzz")
-        chat_btn.setFixedSize(150, 50)  # Bigger size
+        chat_btn.setText("💬 Network Buzz")
         chat_btn.setStyleSheet("""
             QToolButton {
                 background-color: #6c63ff;
                 color: white;
                 font-weight: bold;
-                font-size: 16px;
-                padding: 10px;
-                border-radius: 5px;
+                padding: 8px;
+                border-radius: 8px;
+                margin-left: 10px;
             }
             QToolButton:hover {
                 background-color: #5a54d1;
-            }
-            QToolButton:pressed {
-                background-color: #4b47b3;
             }
         """)
         chat_btn.clicked.connect(self.open_chat)
@@ -184,63 +186,30 @@ class Browser(QMainWindow):
 
         # URL bar
         self.url_bar = QLineEdit()
-        self.url_bar.setFont(QFont("Arial", 10))
-        self.url_bar.setPlaceholderText("enter your url here")
-        self.url_bar.setFixedWidth(400)
+        self.url_bar.setFont(QFont("Arial", 12))
+        self.url_bar.setPlaceholderText("Enter URL here")
         self.url_bar.returnPressed.connect(self.navigate_to_url)
-        self.url_bar.setStyleSheet("""
-            QLineEdit {
-                color: black;
-                background-color: #ffffff;
-                border-radius: 5px;
-                padding: 4px;
-                transition: box-shadow 0.3s ease;
-            }
-            QLineEdit:focus {
-                box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
-            }
-        """)
         navbar.addWidget(self.url_bar)
 
         # Browser view
         self.browser = QWebEngineView()
-        self.browser.setUrl(QUrl("https://www.google.com"))  # Set Glance homepage URL
-        container = QWidget()
+        self.browser.setUrl(QUrl("https://www.google.com"))
         layout = QVBoxLayout()
         layout.addWidget(self.browser)
-        container.setLayout(layout)
-        container.setStyleSheet("padding: 20px;")
-        self.setCentralWidget(container)
 
-        self.setStyleSheet("""
-            QMainWindow {
-                background-color: #eaeaea;
-            }
-            QToolBar {
-                spacing: 5px;
-                height: 45px;
-            }
-            QToolBar QToolButton {
-                color: black;
-                background-color: #e0e0e0;
-                border-radius: 5px;
-                padding: 6px;
-                margin: 3px;
-            }
-            QToolBar QToolButton:hover {
-                background-color: #d0d0d0;
-            }
-        """)
+        container = QWidget()
+        container.setLayout(layout)
+        self.setCentralWidget(container)
 
     def open_chat(self):
         self.chat_dialog = ChatDialog()
         self.chat_dialog.exec_()
 
     def navigate_home(self):
-        self.browser.setUrl(QUrl("https://www.google.com"))  # Navigate to Glance homepage
+        self.browser.setUrl(QUrl("https://www.google.com"))
 
     def navigate_to_url(self):
-        url = "http://" + self.url_bar.text().strip() + ".com"
+        url = self.url_bar.text()
         self.browser.setUrl(QUrl(url))
 
     def browser_back(self):
