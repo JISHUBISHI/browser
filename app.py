@@ -9,6 +9,7 @@ from PyQt5.QtGui import QIcon, QFont, QPixmap
 
 def generate_text_with_llama(prompt):
     command = ["ollama", "run", "llama3.2"]
+    prompt = prompt + "in 30 words"
 
     try:
         process = subprocess.Popen(command, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
@@ -31,7 +32,7 @@ def generate_text_with_llama(prompt):
 class ChatDialog(QDialog):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("Network Buzz - Powered by Llama")
+        self.setWindowTitle("Network Buzz - Powered by Agnik and Parthib")
         self.setGeometry(400, 300, 600, 500)
         self.setStyleSheet("""
             QDialog {
@@ -44,7 +45,7 @@ class ChatDialog(QDialog):
         layout = QVBoxLayout()
         
         # Label for prompt
-        self.prompt_label = QLabel("💬 Ask Llama a question:")
+        self.prompt_label = QLabel("💬 Ask Question:")
         self.prompt_label.setStyleSheet("font-size: 18px; font-weight: bold; color: #333;")
         layout.addWidget(self.prompt_label)
         
@@ -127,7 +128,7 @@ class ChatDialog(QDialog):
             <tr>
                 <td><img src="robot.png" width="35" height="35"></td>
                 <td style="padding-left: 10px; vertical-align: middle;">
-                    <b>Ollama:</b> {response_text}
+                    <b>NetworkBuzz:</b> {response_text}
                 </td>
             </tr>
         </table>

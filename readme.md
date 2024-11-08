@@ -18,8 +18,8 @@ Install the required packages:
 
 ```bash
 pip install PyQt5 PyQtWebEngine
-git clone https://github.com/your-username/glance.git
-cd glance
+git clone 
+cd Browser
 python app.py
 git checkout -b feature-name
 git commit -m "Description of your contribution"
