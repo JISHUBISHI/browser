@@ -1,34 +1,84 @@
-# Glance - A Custom Web Browser with Integrated Chatbot
+# Network Buzz - PyQt Web Browser and Chat Bot
 
-Glance is a custom web browser built using PyQt5 with an integrated chatbot, "Network Buzz." This application provides a browser interface with essential navigation tools, a URL bar, and a conversational interface powered by a text generation model (`llama3.2`). Users can browse the web and engage in AI-powered conversations within the same application.
+## Description
+
+Network Buzz is a desktop application built with PyQt5 that combines a fully functional web browser with an integrated chat bot. The chat bot uses a local Llama model (accessed via the `ollama` CLI) to generate responses to user questions. The application features a modern and responsive UI with a custom-styled chat dialog and navigation toolbar.
 
 ## Features
 
-- **Web Browser**: Navigate the web with standard features like back, forward, reload, and home.
-- **Integrated Chatbot**: Engage with "Network Buzz" to get AI-powered responses.
-- **Enhanced UI**: A clean, intuitive UI with custom styles and animations for a modern experience.
+- **Web Browser:**  
+  - Navigate web pages using a QWebEngineView.
+  - Toolbar buttons for Back, Forward, Reload, and Home navigation.
+  - URL input bar for direct URL entry.
 
-## Installation and Requirements
+- **Integrated Chat Bot:**  
+  - Launch a chat dialog to ask questions.
+  - Uses a local Llama model (`llama3.2`) for text generation.
+  - Displays both user queries and bot responses with styled HTML formatting and icons.
+  
+- **Custom UI:**  
+  - Modern, clean UI with custom styles for dialogs, buttons, and input fields.
+  - Supports both text-based chat and traditional browsing within the same application.
 
-To run Glance, you need to have Python installed along with the necessary dependencies. 
+## Requirements
 
-### Dependencies
+- Python 3.7+
+- [PyQt5](https://pypi.org/project/PyQt5/)
+- [PyQtWebEngine](https://pypi.org/project/PyQtWebEngine/)
+- A local installation of the `ollama` CLI tool and the `llama3.2` model.
+- Optional: Custom icons (`back.png`, `forward.png`, `reload.png`, `home.png`, and `robot.png`) placed in the same directory as the application for enhanced UI visuals.
 
-Install the required packages:
+## Installation
 
-```bash
-pip install PyQt5 PyQtWebEngine
-git clone 
-cd Browser
-python app.py
-git checkout -b feature-name
-git commit -m "Description of your contribution"
-git push origin feature-name
-
-# CONTRIBUTORS:
-1.Parthib karak
-Backend Development
-2.Agnik Bishi
-Frontend Development
+1. **Clone the Repository**
+   git clone https:https://github.com/JISHUBISHI/browser
+   cd browser
+Create a Virtual Environment (Recommended)
 
 
+## Install Dependencies
+## bash
+
+pip install -r requirements.txt
+## Set Up Llama Model
+
+Ensure that you have the ollama CLI installed and that the llama3.2 model is available. For installation and setup instructions, refer to the Ollama documentation.
+
+
+
+## Place the following icon image files in the project directory:
+
+back.png
+forward.png
+reload.png
+home.png
+robot.png
+These icons enhance the user interface for navigation and chat.
+
+## How It Works
+Browser Component
+The Browser class extends QMainWindow and sets up:
+A navigation toolbar with buttons (Back, Forward, Reload, Home) and a URL input field.
+A QWebEngineView to load and display web pages.
+## Chat Component
+The ChatDialog class extends QDialog and provides:
+A text input field for user questions.
+A read-only text display area for conversation history.
+A "Send" button that triggers the text generation process.
+The generate_text_with_llama function calls the ollama CLI with the llama3.2 model and a user prompt (appending "in 30 words" for concise answers). It captures and returns the generated text, handling any errors or timeouts.
+## Application Flow
+Launch the application to open the main browser window.
+Use the toolbar to navigate to different web pages.
+Click the "💬 Network Buzz" button to open the chat dialog.
+In the chat dialog, type your question and press "Send" to receive a response from the Llama model.
+Both user queries and model responses are displayed in the chat dialog with custom formatting.
+Running the Application
+After completing the installation steps, run the application with:
+
+## bash
+python your_script_name.py
+Replace your_script_name.py with the filename containing the provided code. The main browser window will launch, allowing you to browse the web and interact with the integrated chat bot.
+
+
+## Author
+Agnik Bishi and Parthib Karak - Developers of Network Buzz
