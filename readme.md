@@ -76,8 +76,8 @@ Running the Application
 After completing the installation steps, run the application with:
 
 ## bash
-python your_script_name.py
-Replace your_script_name.py with the filename containing the provided code. The main browser window will launch, allowing you to browse the web and interact with the integrated chat bot.
+python app.py
+Replace app.py with the filename containing the provided code. The main browser window will launch, allowing you to browse the web and interact with the integrated chat bot.
 
 
 ## Author
